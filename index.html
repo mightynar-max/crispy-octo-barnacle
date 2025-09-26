@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Carbon Savings Calculator</title>
+    <style>
+        .carbon-calculator-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid #006633; /* Sutton Green */
+            border-radius: 10px;
+            background-color: #f7fff7; /* Light Green Background */
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        #bookInput {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; 
+        }
+        button {
+            background-color: #006633; /* Primary Action Colour */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #004d26; /* Darker green on hover */
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+        }
+        .savings-amount {
+            font-size: 2em;
+            font-weight: bold;
+            color: #006633;
+            margin: 5px 0;
+        }
+        .equivalent {
+            font-style: italic;
+            color: #555;
+        }
+        .highlight {
+            color: #ff9900; /* A contrast colour for emphasis */
+        }
+        .disclaimer {
+            font-size: 0.8em;
+            color: #777;
+            margin-top: 15px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="carbon-calculator-container">
+        <h3 style="color: #006633;">Your Green Libraries Impact 🌿</h3>
+        <p>Enter the number of books you borrowed from Sutton Libraries in the last year:</p>
+        
+        <input type="number" id="bookInput" placeholder="e.g., 15" min="0" value="10">
+        
+        <button onclick="calculateCarbonSavings()">Calculate Savings</button>
+        
+        <div id="resultOutput" class="result">
+            <p>Your estimated CO₂ savings will appear here.</p>
+        </div>
+
+        <p class="disclaimer">
+            *Based on an estimated 2.7 kg CO₂e saved per book borrowed instead of bought new.
+        </p>
+    </div>
+
+    <script>
+        const CO2_PER_BOOK_KG = 2.7; // The standard figure in kg CO2e
+        const CO2_PER_MILE_KG = 0.4; // Average CO2 per mile driven
+
+        function calculateCarbonSavings() {
+            const booksBorrowed = document.getElementById('bookInput').value;
+
+            if (booksBorrowed === "" || isNaN(booksBorrowed) || booksBorrowed < 0) {
+                document.getElementById('resultOutput').innerHTML = 
+                    '<p class="error">Please enter a valid number of books.</p>';
+                return;
+            }
+
+            const totalCO2Saved = booksBorrowed * CO2_PER_BOOK_KG;
+            const milesSaved = (totalCO2Saved / CO2_PER_MILE_KG).toFixed(1);
+
+            const resultHTML = `
+                <h4>🎉 Fantastic Work! 🎉</h4>
+                <p>By borrowing <strong class="highlight">${booksBorrowed}</strong> books, you've saved an estimated:</p>
+                <p class="savings-amount">${totalCO2Saved.toFixed(1)} kg CO₂e</p>
+                <p class="equivalent">That's the same as taking a car off the road for <strong class="highlight">${milesSaved} miles</strong>! Keep up the great work and borrow more from Sutton Libraries!</p>
+            `;
+
+            document.getElementById('resultOutput').innerHTML = resultHTML;
+        }
+    </script>
+</body>
+</html>
